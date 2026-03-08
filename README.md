@@ -1,4 +1,4 @@
-# cf-agent-building
+# ci-agent-building
 
 A project for building AI agents that assist with rigorous causal inference analyses across a variety of data science projects.
 
