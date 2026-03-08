@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+wheels/
+*.so
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+*.ipynb_checkpoints
+
+# R
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rproj
+*.Rout
+*.Rout.save
+
+# Stata
+*.dta.bak
+*.log
+*.smcl
+*.stpr
+*.ster
+
+# Data files (often large or sensitive)
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.parquet
+*.feather
+*.dta
+*.sav
+*.sas7bdat
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Secrets / credentials
+*.env
+.env.*
+secrets.*
+credentials.*
