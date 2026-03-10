@@ -51,3 +51,34 @@ A record of meaningful stages in this project: decisions made, approaches agreed
 
 ---
 
+### S03 — References Catalog, Tier Tracking & Hook Infrastructure — 2026-03-10
+
+- **Phase**: Implementation
+- **Initiator**: User
+- **User Engagement**: Medium
+- **User Action Type**: Structuring / Constraint setting
+- **Input Modality**: In-conversation text
+- **Prompt summary**: User asked for a catalog in `references/` to track uploaded PDFs with a tier field, and a PostToolUse hook for this project only. Follow-ups: re-extraction signal design (Skim → Deep upgrade); Skim handling for non-standard papers; global hook should skip any project with its own `.claude/settings.json`; pre-approve `Bash(python *)` for subagents.
+- **AI output summary**: Created `references/CATALOG.md` with mismatch-based re-extraction logic (Extracted column records tier-at-extraction). Created `.claude/settings.json` and `.claude/hooks/tool_audit.py` logging to project-level `tool_audit.log`. Updated global hook to defer via `.claude/settings.json` detection. Added `Bash(python *)` to project permissions. Fixed path-quoting bug in hook command.
+- **Decision Dependency**: User-influenced
+- **Reason for deviation**: Ambiguity *(re-extraction signal design; hook scope)*
+- **Outcome**: Catalog and hook infrastructure in place; mismatch-based re-extraction logic established; subagents can run pdfplumber without approval prompts.
+- **Notes**: Write tool remains unapproved for subagents by design — keeps a natural review checkpoint before extractions land on disk.
+
+---
+
+### S04 — Full Paper Extraction Run (All 5 Papers) — 2026-03-10
+
+- **Phase**: Implementation
+- **Initiator**: Joint
+- **User Engagement**: Medium
+- **User Action Type**: Planning & sequencing / Approval only
+- **Input Modality**: In-conversation text / Named reference (CATALOG.md)
+- **Prompt summary**: User requested extraction of all remaining papers. Agreed on Option 4 strategy: 3 lighter papers in parallel (Skim + 2 Standard), then Deep separately. Special instruction for IZA paper: pay close attention to replication methodology and exact steps. User approved pdfplumber install when Read tool failed due to missing pdftoppm.
+- **AI output summary**: Ran 3 parallel background agents (2021 AER Standard, 2021 AER Appendix Skim, 2023 JoE Standard). Ran IZA Deep and 2004 QJE Deep sequentially. Resolved two issues mid-run: (1) pdftoppm missing → installed pdfplumber; (2) Write blocked for background agents → workaround: agents return content, main context writes files. All 5 extractions written to `knowledge/papers/`. Catalog updated with Extracted tiers.
+- **Decision Dependency**: User-influenced
+- **Reason for deviation**: Quality *(pdfplumber install needed; Write-blocking workaround adopted)*
+- **Outcome**: All 5 papers extracted at assigned tiers; catalog fully up to date; pdfplumber installed for future runs.
+- **Notes**: IZA extraction includes detailed Replication Notes section (exact Stata commands, numerical results, dataset details) per user's replication goal.
+
+---

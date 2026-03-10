@@ -11,4 +11,4 @@ All extracted paper summaries live in `knowledge/papers/`. Each entry below link
 
 | File | Citation | Tier | Tags | Notes |
 |------|----------|------|------|-------|
-| _(none yet)_ | | | | |
+| [2023_IZA_synthetic_did_estimation.md](papers/2023_IZA_synthetic_did_estimation.md) | Clarke, Pailañir, Athey, Imbens (2023). Synthetic Difference-in-Differences Estimation. IZA DP No. 15907. | Deep | DiD, synthetic-control, SDiD, staggered, inference, Stata, implementation | Stata `sdid` command documentation; covers block + staggered designs, 3 inference methods, covariate adjustment |
