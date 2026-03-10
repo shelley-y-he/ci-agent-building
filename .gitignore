@@ -45,6 +45,9 @@ venv.bak/
 *.stpr
 *.ster
 
+# References folder (papers, datasets)
+references/
+
 # Data files (often large or sensitive)
 *.pdf
 *.csv
