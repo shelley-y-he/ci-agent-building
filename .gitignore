@@ -46,6 +46,7 @@ venv.bak/
 *.ster
 
 # Data files (often large or sensitive)
+*.pdf
 *.csv
 *.tsv
 *.xlsx
