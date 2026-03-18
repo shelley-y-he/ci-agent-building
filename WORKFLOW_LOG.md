@@ -98,3 +98,19 @@ A record of meaningful stages in this project: decisions made, approaches agreed
 - **Notes**: Known perf issue: placebo inference ~1-3s/rep for block designs, ~26s/rep for staggered adoption. `synthdid` patches are to the installed package and will need re-applying after reinstall. Jackknife invalid for quota dataset (most cohorts have 1 treated unit).
 
 ---
+
+### S06 — Tooling, Workflow, and Meta Discussion — 2026-03-18
+
+- **Phase**: Other
+- **Initiator**: User
+- **User Engagement**: Medium
+- **User Action Type**: Constraint setting / Meta-analysis
+- **Input Modality**: In-conversation text
+- **Prompt summary**: Several meta topics: (1) Set up a Stop hook for notifications when Claude finishes a response — user tried beep, switched to Windows toast pop-up. (2) Asked about context window usage in this session and how to avoid future bloat. (3) Asked about prompting practices that affect context. (4) Asked about handling n-rep simulations more efficiently (pilot timing → decide n). (5) Asked about documenting lessons learned across projects.
+- **AI output summary**: Added Stop hook to global `~/.claude/settings.json` (beep → replaced with Windows toast notification via PowerShell). Identified main context culprits: `update-config` skill schema dump, repeated timeout polling loops. Saved feedback memory to avoid using skills for simple settings edits in future. Discussed pilot-first pattern for simulation tools (`n_pilot=2` → estimate → decide n). Discussed lessons-learned documentation strategy: CLAUDE.md for behavior changes, `genai-workflow-meta/LESSONS.md` for transferable insights, workflow log Notes for project-specific gotchas.
+- **Decision Dependency**: User-influenced
+- **Reason for deviation**: Ambiguity *(notification format required iteration — beep pitch, then switched to visual)*
+- **Outcome**: Toast notification hook live in global settings. Feedback memory saved. Workflow and documentation principles discussed but no new files committed.
+- **Notes**: User prefers managing `/compact` manually — no auto-compact. `update-config` skill should not be used for simple settings edits (saved to memory). Pilot timing pattern (`n_pilot` → time budget → decide n) noted as a feature candidate for future simulation tools.
+
+---
