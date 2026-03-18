@@ -82,3 +82,19 @@ A record of meaningful stages in this project: decisions made, approaches agreed
 - **Notes**: IZA extraction includes detailed Replication Notes section (exact Stata commands, numerical results, dataset details) per user's replication goal.
 
 ---
+
+### S05 — Synthetic DiD Analysis Module (sdid/) — 2026-03-17
+
+- **Phase**: Implementation
+- **Initiator**: User
+- **User Engagement**: Medium
+- **User Action Type**: Target definition / Constraint setting / Approval only
+- **Input Modality**: In-conversation text
+- **Prompt summary**: User requested a simple, reusable Python tool for running synthetic DiD analysis with "one or a few clicks," rigorous and replicable, with sensitivity test options. Follow-up clarifications: Python + function/class interface; sensitivity tests to include pre-period length, outlier exclusion, inference method comparison, covariate variants, and estimator comparison (DiD vs SC vs SDID). User approved plan then directed to proceed with n_reps=10 for smoke tests; instructed to document timeout issues and move on rather than debug them.
+- **AI output summary**: Identified `synthdid` PyPI package (v0.10.1) as the wrapping target. Applied two pandas-3.0 compatibility patches to installed package (`groupby.apply` → `transform` in `utils.py` and `vcov.py`). Built `sdid/` module: `core.py` (`SyntheticDiD` class, `SyntheticDiDResults`), `sensitivity.py` (`SensitivityRunner`, `SensitivityResults` with forest plot), `utils.py` (balance check, outlier detection, loader), `validate.py` (IZA replication validator). Built `notebooks/sdid_demo.ipynb`. IZA validation passes: Prop 99 ATT = -15.604, Quota ATT = 8.034. Sensitivity suite smoke-tested on 6 variants (baseline, SC, DiD, 2 pre-period trims, outlier drop) — all ran cleanly.
+- **Decision Dependency**: User-influenced
+- **Reason for deviation**: Quality *(pandas 3.0 incompatibility required patching upstream package; staggered inference too slow for full n_reps=200 — documented as known issue)*
+- **Outcome**: `sdid/` module committed. Working prototype: one-call SDID/SC/DiD estimation + sensitivity suite, validated against IZA paper.
+- **Notes**: Known perf issue: placebo inference ~1-3s/rep for block designs, ~26s/rep for staggered adoption. `synthdid` patches are to the installed package and will need re-applying after reinstall. Jackknife invalid for quota dataset (most cohorts have 1 treated unit).
+
+---
