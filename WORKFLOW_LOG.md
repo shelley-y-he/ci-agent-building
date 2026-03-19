@@ -114,3 +114,19 @@ A record of meaningful stages in this project: decisions made, approaches agreed
 - **Notes**: User prefers managing `/compact` manually — no auto-compact. `update-config` skill should not be used for simple settings edits (saved to memory). Pilot timing pattern (`n_pilot` → time budget → decide n) noted as a feature candidate for future simulation tools.
 
 ---
+
+### S07 — sdidtool: Colab Testing, Bug Fixes & Notebook Rebuild — 2026-03-19
+
+- **Phase**: Debugging / Review
+- **Initiator**: User
+- **User Engagement**: High
+- **User Action Type**: Problem framing / Constraint setting / Evaluation criteria
+- **Input Modality**: In-conversation text / In-conversation artifact (notebook auto-loaded into context)
+- **Prompt summary**: User ran `sdid_demo.ipynb` on Colab and identified several issues: (1) name collision with `sdid` PyPI package; (2) Colab setup cells needed (Drive mount, chdir) as standard practice for all future notebooks; (3) empty spurious plot before diagnostics; (4) double figure display; (5) 33 "Error" prints during sensitivity with no visible error message; (6) `se_pass` hardcoded `True` for quota despite SE being `nan`. Also requested a new clean notebook rather than modifying the one under test, with an accurate plot explanation markdown based on the actual `synthdid` source.
+- **AI output summary**: Renamed module `sdid/` → `sdidtool/` throughout. Saved Colab notebook conventions to memory (Drive mount + chdir as first code cells). Fixed empty plot (removed spurious `plt.subplots()`). Fixed double display (`return None` when `show=True` in both `core.py` and `sensitivity.py`). Suppressed synthdid stdout/stderr during `vcov()`; added `n_failed` counting and `rep_success_pct` field to `SyntheticDiDResults` and sensitivity table. Fixed `se_pass` to `"skipped"` with matching print logic. Read `synthdid` source to understand `plot_weights()` output and wrote accurate explanation (x=units, y=weighted outcome difference, dot size=unit weight, color=included/excluded). Created `sdid_demo_new.ipynb` with all fixes, cleared outputs, committed.
+- **Decision Dependency**: User-influenced
+- **Reason for deviation**: Quality *(issues identified through Colab testing)*
+- **Outcome**: Module renamed; 5 bugs fixed; Colab conventions saved to memory; new clean notebook committed (6b50457).
+- **Notes**: `rep_success_pct` bias question left open — failures may be non-random w.r.t. effect size, potentially understating SE. Flagged but not resolved. Plot explanation was initially wrong (based on theory, not actual package output) — corrected after reading synthdid source.
+
+---
