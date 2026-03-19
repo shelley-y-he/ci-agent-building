@@ -1,4 +1,4 @@
-"""Utility helpers for the SDID wrapper: data validation, outlier detection, loading."""
+"""Utility helpers for the sdidtool wrapper: data validation, outlier detection, loading."""
 
 import pandas as pd
 import numpy as np

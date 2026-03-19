@@ -3,7 +3,7 @@ Core SyntheticDiD class: wraps the `synthdid` package with a clean high-level AP
 
 Usage
 -----
-    from sdid import SyntheticDiD
+    from sdidtool import SyntheticDiD
 
     model = SyntheticDiD(
         df=df,
@@ -19,6 +19,8 @@ Usage
 
 from __future__ import annotations
 
+import contextlib
+import io
 import warnings
 from dataclasses import dataclass, field
 from typing import Literal
@@ -54,7 +56,14 @@ class SyntheticDiDResults:
     se: float | None
     n_reps: int | None
     seed: int | None
+    n_failed: int | None
     _model: object = field(repr=False)  # underlying synthdid model
+
+    @property
+    def rep_success_pct(self) -> float | None:
+        if self.n_reps is None or self.n_failed is None:
+            return None
+        return round(100 * (self.n_reps - self.n_failed) / self.n_reps, 1)
 
     @property
     def ci_lower(self) -> float | None:
@@ -85,6 +94,7 @@ class SyntheticDiDResults:
             "ci_upper": round(self.ci_upper, 4) if self.ci_upper is not None else None,
             "pvalue": round(self.pvalue, 4) if self.pvalue is not None else None,
             "inference": self.inference,
+            "rep_success_pct": self.rep_success_pct,
         }])
 
     def plot(self, show: bool = True):
@@ -92,7 +102,6 @@ class SyntheticDiDResults:
         import matplotlib.pyplot as plt
         figs = {}
         try:
-            fig_trends, ax = plt.subplots()
             self._model.plot_outcomes()
             figs["trends"] = plt.gcf()
             if show:
@@ -106,7 +115,7 @@ class SyntheticDiDResults:
                 plt.show()
         except Exception:
             pass
-        return figs
+        return None if show else figs
 
 
 class SyntheticDiD:
@@ -191,7 +200,10 @@ class SyntheticDiD:
         if covariates and cov_method:
             fit_kwargs["cov_method"] = cov_method
 
-        with warnings.catch_warnings():
+        captured = io.StringIO()
+        with warnings.catch_warnings(), \
+             contextlib.redirect_stdout(captured), \
+             contextlib.redirect_stderr(captured):
             warnings.simplefilter("ignore")
             model.fit(**fit_kwargs)
 
@@ -203,6 +215,8 @@ class SyntheticDiD:
             else:
                 model.vcov(method=inference, n_reps=n_reps)
 
+        n_failed = captured.getvalue().count("Error")
+
         att = float(model.att)
         se = float(model.se) if model.se is not None else None
 
@@ -213,6 +227,7 @@ class SyntheticDiD:
             se=se,
             n_reps=n_reps,
             seed=seed,
+            n_failed=n_failed if inference in ("placebo", "bootstrap") else None,
             _model=model,
         )
 

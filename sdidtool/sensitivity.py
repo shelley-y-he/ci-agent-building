@@ -50,6 +50,7 @@ class SensitivityResults:
 
         if show:
             plt.show()
+            return None
         return fig
 
 
@@ -221,10 +222,12 @@ class SensitivityRunner:
                 "ci_lower": round(result.ci_lower, 4) if result.ci_lower is not None else None,
                 "ci_upper": round(result.ci_upper, 4) if result.ci_upper is not None else None,
                 "pvalue": round(result.pvalue, 4) if result.pvalue is not None else None,
+                "rep_success_pct": result.rep_success_pct,
             }
         except Exception as e:
             return {
                 "variant": label,
                 "att": None, "se": None, "ci_lower": None, "ci_upper": None, "pvalue": None,
+                "rep_success_pct": None,
                 "error": str(e),
             }

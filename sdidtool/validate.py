@@ -103,7 +103,7 @@ def validate_iza_replication(
         "att_pass": att_ok_2,
         "se": None,
         "se_target": _QUOTA_SE,
-        "se_pass": True,  # SE not checked in fast validation
+        "se_pass": "skipped",  # SE not checked — placebo inference too slow for fast validation
     })
 
     df_results = pd.DataFrame(results)
@@ -114,10 +114,11 @@ def validate_iza_replication(
         print("=" * 60)
         for _, row in df_results.iterrows():
             status_att = "PASS" if row.att_pass else "FAIL"
-            status_se = "PASS" if row.se_pass else "FAIL"
+            status_se = "SKIPPED" if row.se_pass == "skipped" else ("PASS" if row.se_pass else "FAIL")
+            se_str = f"{row.se:>8.4f}" if row.se is not None else "     n/a"
             print(f"\n{row['example']}")
             print(f"  ATT: {row.att:>8.4f}  (target: {row.att_target:>8.3f})  [{status_att}]")
-            print(f"  SE:  {row.se:>8.4f}  (target: {row.se_target:>8.3f})  [{status_se}]")
+            print(f"  SE:  {se_str}  (target: {row.se_target:>8.3f})  [{status_se}]")
         print()
 
     # Hard assertion on ATT
